@@ -42,7 +42,7 @@
     ],
     "no-empty": false,
     "no-inferrable-types": [
-      true,
+      false,
       "ignore-params"
     ],
     "no-non-null-assertion": true,
@@ -51,7 +51,7 @@
     "no-use-before-declare": true,
     "no-var-requires": false,
     "object-literal-key-quotes": [
-      true,
+      false,
       "as-needed"
     ],
     "object-literal-sort-keys": false,
@@ -60,6 +60,7 @@
       true,
       "single"
     ],
+    "no-trailing-whitespace": false,
     "trailing-comma": false,
     "no-output-on-prefix": true,
     "no-inputs-metadata-property": true,

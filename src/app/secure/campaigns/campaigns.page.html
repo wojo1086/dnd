@@ -1,0 +1,19 @@
+<ion-header>
+	<ion-toolbar color="primary">
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+		<ion-title>Campaigns</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content color="light">
+	<ion-card *ngIf="!campaigns.length && !isLoading" fxLayout="row" fxLayoutAlign="center center" (click)="createNewCampaign()">
+		<ion-card-content>
+			<ion-icon color="primary" name="add"></ion-icon>
+		</ion-card-content>
+	</ion-card>
+	<ion-card *ngFor="let campaign of campaigns">
+		{{campaign.name}}
+	</ion-card>
+</ion-content>

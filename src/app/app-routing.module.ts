@@ -1,26 +1,41 @@
-import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {PreloadAllModules, RouterModule, Routes} from '@angular/router';
+import {IsLoggedGuard} from './guards/is-logged/is-logged.guard';
+import {IsNotAuthenticatedGuard} from './guards/is-not-authenticated/is-not-authenticated.guard';
 
 const routes: Routes = [
-  {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
-  },
-  {
-    path: 'home',
-    loadChildren: () => import('./home/home.module').then(m => m.HomePageModule)
-  },
-  {
-    path: 'list',
-    loadChildren: () => import('./list/list.module').then(m => m.ListPageModule)
-  }
+    {
+        path: '',
+        redirectTo: 'login',
+        pathMatch: 'full'
+    },
+    {
+        path: 'login',
+        canActivate: [IsNotAuthenticatedGuard],
+        loadChildren: () => import('./login/login.module').then(m => m.LoginPageModule)
+    },
+    {
+        path: 'register',
+        canActivate: [IsNotAuthenticatedGuard],
+        loadChildren: () => import('./register/register.module').then(m => m.RegisterPageModule)
+    },
+    {
+        path: 'activate-account',
+        canActivate: [IsNotAuthenticatedGuard],
+        loadChildren: () => import('./activate-account/activate-account.module').then(m => m.ActivateAccountPageModule)
+    },
+    {
+        path: 'secure',
+        canActivate: [IsLoggedGuard],
+        loadChildren: () => import('./secure/secure.module').then(m => m.SecurePageModule)
+    }
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
-  ],
-  exports: [RouterModule]
+    imports: [
+        RouterModule.forRoot(routes, {preloadingStrategy: PreloadAllModules})
+    ],
+    exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule {
+}
