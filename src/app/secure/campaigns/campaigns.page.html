@@ -9,15 +9,16 @@
 
 <ion-content color="light">
 	<ion-card *ngIf="!campaigns.length && !isLoading" fxLayout="row" fxLayoutAlign="center center" (click)="createNewCampaign()">
-		<ion-card-content>
+		<ion-card-content fxFlex fxLayout="column" fxLayoutAlign="center center">
 			<ion-icon color="primary" name="add"></ion-icon>
+			<ion-text><p>Create your first campaign</p></ion-text>
 		</ion-card-content>
 	</ion-card>
 	<ion-card *ngFor="let campaign of campaigns">
 		{{campaign.name}}
 	</ion-card>
 
-	<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+	<ion-fab *ngIf="campaigns.length && !isLoading" vertical="bottom" horizontal="end" slot="fixed">
 		<ion-fab-button (click)="createNewCampaign()">
 			<ion-icon name="add"></ion-icon>
 		</ion-fab-button>

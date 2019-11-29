@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {from, Observable} from 'rxjs';
 import {AngularFireAuth} from '@angular/fire/auth';
-import {switchMap} from 'rxjs/operators';
 import {AngularFirestore} from '@angular/fire/firestore';
+import {AuthService} from '../auth/auth.service';
 
 @Injectable({
     providedIn: 'root'
@@ -10,20 +10,13 @@ import {AngularFirestore} from '@angular/fire/firestore';
 export class CampaignsService {
     campaigns;
 
-    constructor(private afAuth: AngularFireAuth, private afs: AngularFirestore) {
-
+    constructor(private afAuth: AngularFireAuth,
+                private authService: AuthService,
+                private afs: AngularFirestore) {
+        this.campaigns = this.afs.collection(`users`).doc(`${authService.currentUserId}`).collection('campaigns', ref => ref.orderBy('createdAt'));
     }
 
     getCampaigns(): Observable<any> {
-        return this.afAuth.user.pipe(
-            switchMap(user => {
-                this.campaigns = this.afs.collection(`users`).doc(`${user.uid}`).collection('campaigns');
-                return this.campaigns.snapshotChanges();
-            })
-        );
-    }
-
-    getCampaigns2() {
         return this.campaigns.snapshotChanges();
     }
 

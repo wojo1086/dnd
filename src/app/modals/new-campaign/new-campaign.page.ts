@@ -1,6 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import {ModalController} from '@ionic/angular';
-import {FormGroup} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {CampaignsService} from '../../services/campaigns/campaigns.service';
+import {first} from 'rxjs/operators';
+import {NavController} from '@ionic/angular';
+import * as firebase from 'firebase/app';
+import {LoadingService} from '../../services/loading/loading.service';
 
 @Component({
     selector: 'app-new-campaign',
@@ -10,17 +14,37 @@ import {FormGroup} from '@angular/forms';
 export class NewCampaignPage implements OnInit {
     newCampaignForm: FormGroup;
 
-    constructor(private modalController: ModalController) { }
+    constructor(private campaignsService: CampaignsService,
+                private loadingService: LoadingService,
+                private navController: NavController) { }
 
     ngOnInit() {
+        this.resetForm();
     }
 
-    ionViewWillEnter(): void {
-
+    submitForm(): void {
+        console.log(this.newCampaignForm);
+        if (this.newCampaignForm.invalid) {
+            return;
+        }
+        const data = {
+            name: this.newCampaignForm.get('name').value,
+            description: this.newCampaignForm.get('description').value,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        };
+        this.loadingService.presentLoading(`Creating ${data.name}...`);
+        this.campaignsService.createCampaign(data).pipe(first()).subscribe(() => {
+            this.loadingService.cancelLoading();
+            this.navController.back();
+        });
     }
 
-    closeModal(): void {
-        this.modalController.dismiss();
+    private resetForm(): void {
+        this.newCampaignForm = new FormGroup({
+            name: new FormControl('', Validators.required),
+            description: new FormControl('')
+        });
     }
 
 }
