@@ -16,4 +16,10 @@
 	<ion-card *ngFor="let campaign of campaigns">
 		{{campaign.name}}
 	</ion-card>
+
+	<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+		<ion-fab-button (click)="createNewCampaign()">
+			<ion-icon name="add"></ion-icon>
+		</ion-fab-button>
+	</ion-fab>
 </ion-content>

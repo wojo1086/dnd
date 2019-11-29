@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CampaignsService} from '../../services/campaigns/campaigns.service';
 import {LoadingService} from '../../services/loading/loading.service';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-campaigns',
@@ -12,7 +13,9 @@ export class CampaignsPage implements OnInit {
     campaigns = [];
     isLoading = false;
 
-    constructor(private campaignsService: CampaignsService, private loadingService: LoadingService) { }
+    constructor(private campaignsService: CampaignsService,
+                private router: Router,
+                private loadingService: LoadingService) { }
 
     ngOnInit() {
     }
@@ -32,7 +35,9 @@ export class CampaignsPage implements OnInit {
         });
     }
 
-    createNewCampaign(): void {
+    async createNewCampaign() {
+
+        this.router.navigateByUrl('new-campaign');
 
         // const data = {
         //     name: 'Campaign 1',
