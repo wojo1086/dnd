@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {CampaignsService} from '../../services/campaigns/campaigns.service';
+import {CampaignsService, ICampaign} from '../../services/campaigns/campaigns.service';
 import {LoadingService} from '../../services/loading/loading.service';
 import {Router} from '@angular/router';
 
@@ -10,7 +10,7 @@ import {Router} from '@angular/router';
 })
 export class CampaignsPage implements OnInit {
 
-    campaigns = [];
+    campaigns: ICampaign[] = [];
     isLoading = false;
 
     constructor(private campaignsService: CampaignsService,
@@ -18,34 +18,27 @@ export class CampaignsPage implements OnInit {
                 private loadingService: LoadingService) { }
 
     ngOnInit() {
+        this.getData();
     }
 
-    ionViewWillEnter(): void {
-        this.loadingService.presentLoading('Loading campaigns...');
+    createNewCampaign() {
+        this.router.navigateByUrl('new-campaign');
+    }
+
+    private async getData() {
+        await this.loadingService.presentLoading('Loading campaigns...');
         this.isLoading = true;
         this.campaignsService.getCampaigns().subscribe(res => {
-            console.log(res);
-            this.loadingService.cancelLoading();
-            this.isLoading = false;
-            this.campaigns = res.map(data => data.payload.doc.data());
-        },
-        err => {
-            this.loadingService.cancelLoading();
-            this.isLoading = false;
-        });
-    }
-
-    async createNewCampaign() {
-
-        this.router.navigateByUrl('new-campaign');
-
-        // const data = {
-        //     name: 'Campaign 1',
-        //     description: 'This is a description.'
-        // };
-        // this.campaignsService.createCampaign(data).subscribe(res => {
-        //     console.log(res);
-        // });
+                console.log(res);
+                this.loadingService.cancelLoading();
+                this.isLoading = false;
+                // this.campaigns = res.docs.map(data => data.data());
+                this.campaigns = res.map(data => data.payload.doc.data());
+            },
+            err => {
+                this.loadingService.cancelLoading();
+                this.isLoading = false;
+            });
     }
 
 }

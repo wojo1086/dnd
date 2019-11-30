@@ -3,6 +3,14 @@ import {from, Observable} from 'rxjs';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {AuthService} from '../auth/auth.service';
+import * as firebase from 'firebase/app';
+
+export interface ICampaign {
+    name: string;
+    description: string;
+    createdAt: firebase.firestore.Timestamp;
+    updatedAt: firebase.firestore.Timestamp;
+}
 
 @Injectable({
     providedIn: 'root'

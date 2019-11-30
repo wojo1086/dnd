@@ -15,7 +15,13 @@
 		</ion-card-content>
 	</ion-card>
 	<ion-card *ngFor="let campaign of campaigns">
-		{{campaign.name}}
+		<ion-card-header>
+			<ion-card-title>{{campaign.name}}</ion-card-title>
+			<ion-card-subtitle>{{campaign.createdAt.seconds * 1000 | date:'mediumDate'}}</ion-card-subtitle>
+		</ion-card-header>
+		<ion-card-content>
+			{{campaign.description}}
+		</ion-card-content>
 	</ion-card>
 
 	<ion-fab *ngIf="campaigns.length && !isLoading" vertical="bottom" horizontal="end" slot="fixed">
