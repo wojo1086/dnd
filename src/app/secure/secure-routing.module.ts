@@ -15,10 +15,13 @@ const routes: Routes = [
             {
                 path: 'campaigns',
                 loadChildren: () => import('../secure/campaigns/campaigns.module').then(m => m.CampaignsPageModule)
+            },
+            {
+                path: 'account',
+                loadChildren: () => import('./account/account.module').then( m => m.AccountPageModule)
             }
         ]
-    },
-
+    }
 ];
 
 @NgModule({
