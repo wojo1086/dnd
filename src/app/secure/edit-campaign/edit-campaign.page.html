@@ -1,0 +1,24 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="secure/campaigns"></ion-back-button>
+        </ion-buttons>
+        <ion-title>Edit Campaign</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content color="light">
+    <form [formGroup]="editCampaignForm">
+        <ion-list>
+            <ion-item>
+                <ion-input placeholder="Title" formControlName="name"></ion-input>
+            </ion-item>
+        </ion-list>
+        <ion-textarea placeholder="Write a description..." rows="10" formControlName="description"></ion-textarea>
+    </form>
+
+</ion-content>
+
+<ion-footer>
+    <ion-button expand="block" [disabled]="newCampaignForm.invalid" (click)="submitForm()">Submit</ion-button>
+</ion-footer>

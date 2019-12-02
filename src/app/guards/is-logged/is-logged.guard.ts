@@ -16,6 +16,9 @@ export class IsLoggedGuard implements CanActivate {
         if (!this.auth.isAuthenticated) {
             this.router.navigateByUrl('login');
             return false;
+        } else if (!this.auth.emailIsVerified) {
+            this.router.navigateByUrl('activate-account');
+            return false;
         }
         return true;
     }

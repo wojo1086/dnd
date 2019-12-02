@@ -14,7 +14,6 @@ import {AngularFireModule} from '@angular/fire';
 import {environment} from '../environments/environment';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {AngularFirestore} from '@angular/fire/firestore';
-import {NewCampaignPage} from './modals/new-campaign/new-campaign.page';
 
 export function initializeApp(authService: AuthService) {
     return (): Promise<any> => {
@@ -44,6 +43,9 @@ export function initializeApp(authService: AuthService) {
             multi: true,
             deps: [AuthService]
         }
+    ],
+    exports: [
+
     ],
     bootstrap: [AppComponent]
 })

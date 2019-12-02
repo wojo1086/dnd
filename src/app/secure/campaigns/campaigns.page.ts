@@ -9,7 +9,7 @@ import {Router} from '@angular/router';
 })
 export class CampaignsPage implements OnInit {
 
-    campaigns: ICampaign[] = [];
+    campaigns = [];
     isLoading = false;
 
     constructor(private campaignsService: CampaignsService,
@@ -20,16 +20,21 @@ export class CampaignsPage implements OnInit {
     }
 
     createNewCampaign() {
-        this.router.navigateByUrl('new-campaign');
+        this.router.navigateByUrl('secure/new-campaign');
     }
 
-    private async getData() {
+    editCampaign(campaign): void {
+        console.log(campaign.id);
+    }
+
+    private getData(): void {
         this.isLoading = true;
         this.campaignsService.getCampaigns().subscribe(res => {
                 console.log(res);
                 this.isLoading = false;
                 // this.campaigns = res.docs.map(data => data.data());
-                this.campaigns = res.map(data => data.payload.doc.data());
+                this.campaigns = res.map(data => data.payload.doc);
+                // this.campaigns = res.map(data => data.payload.doc.data());
             },
             err => {
                 this.isLoading = false;

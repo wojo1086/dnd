@@ -13,7 +13,7 @@ export class IsNotAuthenticatedGuard implements CanActivate {
     canActivate(
         next: ActivatedRouteSnapshot,
         state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-        if (this.auth.isAuthenticated) {
+        if (this.auth.isAuthenticated && this.auth.emailIsVerified) {
             this.router.navigateByUrl('secure/home');
             return false;
         }

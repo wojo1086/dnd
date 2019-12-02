@@ -5,6 +5,7 @@ import {of} from 'rxjs';
 import {AuthService} from '../services/auth/auth.service';
 import {Router} from '@angular/router';
 import {LoadingService} from '../services/loading/loading.service';
+import {AccountService} from '../services/account/account.service';
 
 @Component({
     selector: 'app-register',
@@ -22,6 +23,7 @@ export class RegisterPage implements OnInit {
     };
 
     constructor(private auth: AuthService,
+                private accountService: AccountService,
                 private loadingService: LoadingService,
                 private router: Router) {
     }
@@ -45,9 +47,11 @@ export class RegisterPage implements OnInit {
                 return of();
             }),
             switchMap(() => this.auth.sendVerificationEmail()),
+            switchMap(() => this.accountService.setUpNewUser()),
             first(),
             finalize(() => this.loadingService.cancelLoading())
-        ).subscribe(res => {
+        ).subscribe(() => {
+            this.loadingService.cancelLoading();
             this.router.navigateByUrl('activate-account');
         });
     }

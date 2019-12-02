@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth/auth.service';
 import {Router} from '@angular/router';
 import {first} from 'rxjs/operators';
+import {AccountService} from '../../services/account/account.service';
 
 @Component({
     selector: 'app-account',
@@ -10,9 +11,15 @@ import {first} from 'rxjs/operators';
 })
 export class AccountPage implements OnInit {
 
-    constructor(private authService: AuthService, private router: Router) { }
+    constructor(private authService: AuthService,
+                private accountService: AccountService,
+                private router: Router) { }
 
     ngOnInit() {
+    }
+
+    upgrade(): void {
+        this.accountService.changeAccountType(true).pipe(first()).subscribe(res => console.log(res));
     }
 
     logout(): void {

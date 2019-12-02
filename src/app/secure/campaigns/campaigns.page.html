@@ -1,5 +1,5 @@
 <ion-header>
-	<ion-toolbar color="primary">
+	<ion-toolbar dndColor>
 		<ion-buttons slot="start">
 			<ion-menu-button></ion-menu-button>
 		</ion-buttons>
@@ -9,28 +9,26 @@
 
 <ion-content color="light">
 	<ng-container *ngIf="!isLoading">
-		<ion-card *ngIf="!campaigns.length" fxLayout="row" fxLayoutAlign="center center" (click)="createNewCampaign()">
+		<ion-card *ngIf="!campaigns.length" class="add-campaign-card" fxLayout="row" fxLayoutAlign="center center" (click)="createNewCampaign()">
 			<ion-card-content fxFlex fxLayout="column" fxLayoutAlign="center center">
 				<ion-icon color="primary" class="add-campaign-icon" name="add"></ion-icon>
 				<ion-text><p>Create your first campaign</p></ion-text>
 			</ion-card-content>
 		</ion-card>
 
-		<ion-card *ngFor="let campaign of campaigns">
+		<ion-card *ngFor="let campaign of campaigns" class="campaign-card">
 			<ion-card-header>
-				<ion-card-title>{{campaign.name}}</ion-card-title>
-				<ion-card-subtitle>{{campaign.createdAt.seconds * 1000 | date:'mediumDate'}}</ion-card-subtitle>
+				<ion-card-title>{{campaign.data().name}}</ion-card-title>
+				<ion-card-subtitle>{{campaign.data().createdAt.seconds * 1000 | date:'mediumDate'}}</ion-card-subtitle>
 			</ion-card-header>
 			<ion-card-content>
-				<p>{{campaign.description}}</p>
+				<p>{{campaign.data().description}}</p>
 				<div fxLayout="row" class="options">
 					<ion-button fxFlex fill="clear">
 						<ion-icon color="primary" name="people"></ion-icon>
-						<span>
-							<ion-badge color="secondary">66</ion-badge>
-						</span>
+						<ion-badge fxLayout="row" fxLayoutAlign="center center" color="secondary">6</ion-badge>
 					</ion-button>
-					<ion-button fxFlex fill="clear">
+					<ion-button fxFlex fill="clear" (click)="editCampaign(campaign)">
 						<ion-icon color="primary" name="create"></ion-icon>
 					</ion-button>
 				</div>

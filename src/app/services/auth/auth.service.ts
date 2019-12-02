@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import {from, Observable} from 'rxjs';
+import {BehaviorSubject, from, Observable} from 'rxjs';
 import {AngularFireAuth} from '@angular/fire/auth';
 import * as firebase from 'firebase/app';
+import {User} from 'firebase';
 
 @Injectable({
     providedIn: 'root'
@@ -9,6 +10,7 @@ import * as firebase from 'firebase/app';
 export class AuthService {
 
     private authState = null;
+    user$: BehaviorSubject<User> = new BehaviorSubject({} as User);
 
     constructor(private afAuth: AngularFireAuth) {
 
@@ -17,12 +19,17 @@ export class AuthService {
     initUser(): Promise<any> {
         return new Promise((resolve, reject) => this.afAuth.user.subscribe(val => {
             this.authState = val;
+            this.user$.next(val);
             resolve();
         }));
     }
 
     get isAuthenticated(): boolean {
         return this.authState !== null;
+    }
+
+    get emailIsVerified(): boolean {
+        return this.isAuthenticated ? this.authState.emailVerified : false;
     }
 
     get currentUser(): any {

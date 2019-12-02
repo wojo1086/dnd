@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {AccountService} from '../services/account/account.service';
 
 @Component({
     selector: 'app-secure',
@@ -30,7 +31,7 @@ export class SecurePage implements OnInit {
         }
     ];
 
-    constructor() { }
+    constructor(private accountService: AccountService) { }
 
     ngOnInit() {
 

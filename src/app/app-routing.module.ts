@@ -28,10 +28,6 @@ const routes: Routes = [
         path: 'secure',
         canActivate: [IsLoggedGuard],
         loadChildren: () => import('./secure/secure.module').then(m => m.SecurePageModule)
-    },
-    {
-        path: 'new-campaign',
-        loadChildren: () => import('./modals/new-campaign/new-campaign.module').then(m => m.NewCampaignPageModule)
     }
 
 ];

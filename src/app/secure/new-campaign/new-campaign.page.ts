@@ -23,7 +23,6 @@ export class NewCampaignPage implements OnInit {
     }
 
     submitForm(): void {
-        console.log(this.newCampaignForm);
         if (this.newCampaignForm.invalid) {
             return;
         }
