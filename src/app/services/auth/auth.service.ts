@@ -40,6 +40,10 @@ export class AuthService {
         return this.isAuthenticated ? this.authState.uid : '';
     }
 
+    get currentUserEmail(): string {
+        return this.isAuthenticated ? this.authState.email : '';
+    }
+
     register(email: string, password: string): Observable<any> {
         return from(firebase.auth().createUserWithEmailAndPassword(email, password));
     }

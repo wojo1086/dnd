@@ -4,7 +4,7 @@ import {AngularFireAuth} from '@angular/fire/auth';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {AuthService} from '../auth/auth.service';
 import * as firebase from 'firebase/app';
-import {combineLatest, first, withLatestFrom} from 'rxjs/operators';
+import {combineLatest, first, map, switchMap, takeWhile, withLatestFrom} from 'rxjs/operators';
 
 export interface ICampaign {
     name: string;
@@ -22,7 +22,7 @@ export class CampaignsService {
     constructor(private afAuth: AngularFireAuth,
                 private authService: AuthService,
                 private afs: AngularFirestore) {
-        this.campaignsCollection = this.afs.collection(`users`).doc(`${authService.currentUserId}`).collection('campaigns', ref => ref.orderBy('createdAt'));
+        // this.campaignsCollection = this.afs.collection(`users`).doc(`${authService.currentUserId}`).collection('campaigns', ref => ref.orderBy('createdAt'));
     }
 
     getCampaigns(): Observable<any> {
@@ -30,7 +30,9 @@ export class CampaignsService {
     }
 
     getCampaignsOnce(): Observable<any> {
-        return this.campaignsCollection.get();
+        return this.authService.user$.pipe(
+            switchMap(user => this.afs.collection(`users`).doc(`${user.uid}`).collection('campaigns', ref => ref.orderBy('createdAt')).get())
+        );
     }
 
     createCampaign(data): Observable<any> {

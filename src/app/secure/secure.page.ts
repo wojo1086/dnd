@@ -30,6 +30,11 @@ export class SecurePage implements OnInit {
             icon: 'contacts'
         },
         {
+            title: 'Messages',
+            url: '/secure/messages',
+            icon: 'mail'
+        },
+        {
             title: 'Account',
             url: '/secure/account',
             icon: 'person'

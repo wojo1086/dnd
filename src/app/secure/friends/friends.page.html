@@ -1,0 +1,38 @@
+<ion-header>
+	<ion-toolbar dndColor>
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+		<ion-title>Friends</ion-title>
+		<ion-buttons slot="end">
+			<ion-button (click)="findFriend()">
+				<ion-icon name="add"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<ng-container *ngIf="!isLoading">
+		<div *ngIf="!friends.length" fxLayout="column" fxFill fxLayoutAlign="center center">
+			<ion-text color="medium">You don't have any friends yet.</ion-text>
+		</div>
+
+		<ion-list>
+			<ion-item *ngFor="let friend of friends">
+				<ion-label>{{friend.data().email}}</ion-label>
+			</ion-item>
+		</ion-list>
+
+	</ng-container>
+
+	<ng-container *ngIf="isLoading">
+		<ion-list>
+			<ion-item *ngFor="let skele of [1,2,3,5,6,7]">
+				<ion-label>
+					<ion-skeleton-text animated style="width: 25%"></ion-skeleton-text>
+				</ion-label>
+			</ion-item>
+		</ion-list>
+	</ng-container>
+</ion-content>

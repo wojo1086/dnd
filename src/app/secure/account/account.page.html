@@ -8,6 +8,7 @@
 </ion-header>
 
 <ion-content>
-    <ion-button (click)="upgrade()" size="block" color="secondary">Go DM</ion-button>
+    <ion-button *ngIf="!isDM" (click)="switchAccountType(true)" size="block" color="secondary">Switch to DM</ion-button>
+    <ion-button *ngIf="isDM" (click)="switchAccountType(false)" size="block" color="secondary">Switch to Player</ion-button>
     <ion-button (click)="logout()" size="block" color="primary">Log Out</ion-button>
 </ion-content>

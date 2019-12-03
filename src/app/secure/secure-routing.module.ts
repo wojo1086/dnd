@@ -27,6 +27,14 @@ const routes: Routes = [
             {
                 path: 'edit-campaign',
                 loadChildren: () => import('./edit-campaign/edit-campaign.module').then( m => m.EditCampaignPageModule)
+            },
+            {
+                path: 'messages',
+                loadChildren: () => import('./messages/messages.module').then( m => m.MessagesPageModule)
+            },
+            {
+                path: 'friends',
+                loadChildren: () => import('./friends/friends.module').then( m => m.FriendsPageModule)
             }
         ]
     }

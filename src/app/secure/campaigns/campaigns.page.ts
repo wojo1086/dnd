@@ -16,6 +16,15 @@ export class CampaignsPage implements OnInit {
                 private router: Router) { }
 
     ngOnInit() {
+
+    }
+
+    ionViewWillEnter() {
+        this.isLoading = true;
+        this.campaigns = [];
+    }
+
+    ionViewDidEnter() {
         this.getData();
     }
 
@@ -29,11 +38,11 @@ export class CampaignsPage implements OnInit {
 
     private getData(): void {
         this.isLoading = true;
-        this.campaignsService.getCampaigns().subscribe(res => {
+        this.campaignsService.getCampaignsOnce().subscribe(res => {
                 console.log(res);
                 this.isLoading = false;
-                // this.campaigns = res.docs.map(data => data.data());
-                this.campaigns = res.map(data => data.payload.doc);
+                this.campaigns = res.docs;
+                // this.campaigns = res.map(data => data.payload.doc);
                 // this.campaigns = res.map(data => data.payload.doc.data());
             },
             err => {

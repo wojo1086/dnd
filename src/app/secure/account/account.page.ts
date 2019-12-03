@@ -10,16 +10,22 @@ import {AccountService} from '../../services/account/account.service';
     styleUrls: ['./account.page.sass'],
 })
 export class AccountPage implements OnInit {
+    isDM: boolean = false;
 
     constructor(private authService: AuthService,
                 private accountService: AccountService,
-                private router: Router) { }
+                private router: Router) {
+        accountService.isDM$.subscribe(res => {
+            console.log(res);
+            this.isDM = res;
+        });
+    }
 
     ngOnInit() {
     }
 
-    upgrade(): void {
-        this.accountService.changeAccountType(true).pipe(first()).subscribe(res => console.log(res));
+    switchAccountType(isDM): void {
+        this.accountService.changeAccountType(isDM).pipe(first()).subscribe(res => console.log(res));
     }
 
     logout(): void {

@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
-import {BehaviorSubject, from, iif, Observable, of, throwError} from 'rxjs';
+import {BehaviorSubject, from, iif, Observable, throwError} from 'rxjs';
 import {AuthService} from '../auth/auth.service';
-import {mergeMap, switchMap, tap} from 'rxjs/operators';
+import {mergeMap, takeWhile} from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -18,6 +18,7 @@ export class AccountService {
     public setData(): Promise<any> {
         return new Promise((resolve, reject) => {
             this.authService.user$.pipe(
+                takeWhile(user => user !== null),
                 mergeMap(user =>
                     iif(
                         () => !user.uid,
@@ -26,7 +27,6 @@ export class AccountService {
                     )
                 )
             ).subscribe(res => {
-                console.log(res);
                 this.isDM$.next(res.payload.data()['dmMode']);
                 resolve();
             });
@@ -36,7 +36,8 @@ export class AccountService {
     public setUpNewUser() {
         const data = {
             isDM: false,
-            dmMode: false
+            dmMode: false,
+            email: this.authService.currentUserEmail
         };
         return from(this.afs.collection(`users`).doc(`${this.authService.currentUserId}`).set(data));
     }
