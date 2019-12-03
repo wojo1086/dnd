@@ -32,11 +32,13 @@ export class NewCampaignPage implements OnInit {
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         };
-        this.loadingService.presentLoading(`Creating ${data.name}...`);
-        this.campaignsService.createCampaign(data).pipe(first()).subscribe(() => {
-            this.loadingService.cancelLoading();
-            this.navController.back();
+        this.loadingService.presentLoading(`Creating ${data.name}...`).then(() => {
+            this.campaignsService.createCampaign(data).pipe(first()).subscribe(() => {
+                this.loadingService.cancelLoading();
+                this.navController.back();
+            });
         });
+
     }
 
     private resetForm(): void {

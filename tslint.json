@@ -62,6 +62,7 @@
       "single"
     ],
     "no-trailing-whitespace": false,
+    "class-name": false,
     "trailing-comma": false,
     "no-output-on-prefix": true,
     "no-inputs-metadata-property": true,

@@ -7,13 +7,15 @@ import {IonicModule} from '@ionic/angular';
 import {SecurePageRoutingModule} from './secure-routing.module';
 
 import {SecurePage} from './secure.page';
+import {DndColorModule} from '../directives/dnd-toolbar.module';
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
         IonicModule,
-        SecurePageRoutingModule
+        SecurePageRoutingModule,
+        DndColorModule
     ],
     declarations: [SecurePage]
 })

@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { NewCampaignPageRoutingModule } from './new-campaign-routing.module';
 
 import { NewCampaignPage } from './new-campaign.page';
+import {DndColorModule} from '../../directives/dnd-toolbar.module';
 
 @NgModule({
     imports: [
@@ -14,7 +15,8 @@ import { NewCampaignPage } from './new-campaign.page';
         FormsModule,
         IonicModule,
         NewCampaignPageRoutingModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        DndColorModule
     ],
     declarations: [NewCampaignPage]
 })

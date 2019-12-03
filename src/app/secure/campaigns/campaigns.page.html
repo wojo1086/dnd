@@ -17,19 +17,25 @@
 		</ion-card>
 
 		<ion-card *ngFor="let campaign of campaigns" class="campaign-card">
-			<ion-card-header>
+			<ion-card-header (click)="editCampaign(campaign)">
 				<ion-card-title>{{campaign.data().name}}</ion-card-title>
-				<ion-card-subtitle>{{campaign.data().createdAt.seconds * 1000 | date:'mediumDate'}}</ion-card-subtitle>
+				<ion-card-subtitle>Next Session: </ion-card-subtitle>
 			</ion-card-header>
 			<ion-card-content>
-				<p>{{campaign.data().description}}</p>
-				<div fxLayout="row" class="options">
+
+				<ng-container (click)="editCampaign(campaign)">
+					<p>{{campaign.data().description}}</p>
+					<ion-text class="created-at" color="medium"><p>{{campaign.data().createdAt.seconds * 1000 | date:'mediumDate'}}</p></ion-text>
+				</ng-container>
+
+				<div fxLayout="row" class="bottom-bar">
 					<ion-button fxFlex fill="clear">
-						<ion-icon color="primary" name="people"></ion-icon>
-						<ion-badge fxLayout="row" fxLayoutAlign="center center" color="secondary">6</ion-badge>
+						<ion-icon color="secondary" name="people"></ion-icon>
+						<ion-text color="secondary">6 PLAYERS</ion-text>
 					</ion-button>
-					<ion-button fxFlex fill="clear" (click)="editCampaign(campaign)">
-						<ion-icon color="primary" name="create"></ion-icon>
+					<ion-button fxFlex fill="clear">
+						<ion-icon color="secondary" name="text"></ion-icon>
+						<ion-text color="secondary">3 Comments</ion-text>
 					</ion-button>
 				</div>
 			</ion-card-content>

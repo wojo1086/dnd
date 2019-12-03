@@ -25,6 +25,11 @@ export class SecurePage implements OnInit {
             icon: 'search'
         },
         {
+            title: 'Friends',
+            url: '/secure/friends',
+            icon: 'contacts'
+        },
+        {
             title: 'Account',
             url: '/secure/account',
             icon: 'person'

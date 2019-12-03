@@ -5,13 +5,15 @@ import {IonicModule} from '@ionic/angular';
 
 import {HomePage} from './home.page';
 import {HomePageRoutingModule} from './home-routing.module';
+import {DndColorModule} from '../../directives/dnd-toolbar.module';
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
         IonicModule,
-        HomePageRoutingModule
+        HomePageRoutingModule,
+        DndColorModule
     ],
     declarations: [HomePage]
 })
