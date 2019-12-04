@@ -33,11 +33,14 @@ export class AccountService {
         });
     }
 
-    public setUpNewUser() {
+    public setUpNewUser(formData) {
         const data = {
             isDM: false,
             dmMode: false,
-            email: this.authService.currentUserEmail
+            email: this.authService.currentUserEmail,
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            username: formData.username
         };
         return from(this.afs.collection(`users`).doc(`${this.authService.currentUserId}`).set(data));
     }

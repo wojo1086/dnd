@@ -11,27 +11,11 @@
 							<ion-label position="floating" color="primary">Email</ion-label>
 							<ion-input type="text" formControlName="email"></ion-input>
 						</ion-item>
-						<div class="validation-errors">
-							<ng-container *ngFor="let validation of validationMessages.email">
-								<div class="error-message"
-								     *ngIf="loginForm.get('email').hasError(validation.type) && (loginForm.get('email').dirty || loginForm.get('email').touched)">
-									{{ validation.message }}
-								</div>
-							</ng-container>
-						</div>
 
 						<ion-item>
 							<ion-label position="floating" color="primary">Password</ion-label>
 							<ion-input type="password" formControlName="password"></ion-input>
 						</ion-item>
-						<div class="validation-errors">
-							<ng-container *ngFor="let validation of validationMessages.password">
-								<div class="error-message"
-								     *ngIf="loginForm.get('password').hasError(validation.type) && (loginForm.get('password').dirty || loginForm.get('password').touched)">
-									{{ validation.message }}
-								</div>
-							</ng-container>
-						</div>
 
 						<ion-button expand="block" type="submit" [disabled]="!loginForm.valid">
 							Login

@@ -31,7 +31,10 @@ export class RegisterPage implements OnInit {
     ngOnInit() {
         this.registerForm = new FormGroup({
             email: new FormControl('', Validators.required),
-            password: new FormControl('', Validators.required)
+            password: new FormControl('', Validators.required),
+            firstName: new FormControl('', Validators.required),
+            lastName: new FormControl('', Validators.required),
+            username: new FormControl('', Validators.required)
         });
     }
 
@@ -47,7 +50,7 @@ export class RegisterPage implements OnInit {
                 return of();
             }),
             switchMap(() => this.auth.sendVerificationEmail()),
-            switchMap(() => this.accountService.setUpNewUser()),
+            switchMap(() => this.accountService.setUpNewUser(value)),
             first(),
             finalize(() => this.loadingService.cancelLoading())
         ).subscribe(() => {
