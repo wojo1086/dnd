@@ -36,6 +36,8 @@ export class CampaignsService {
     }
 
     createCampaign(data): Observable<any> {
-        return from(this.campaignsCollection.add(data));
+        return this.authService.user$.pipe(
+            switchMap(user => this.afs.collection(`users`).doc(`${user.uid}`).collection('campaigns').add(data))
+        );
     }
 }

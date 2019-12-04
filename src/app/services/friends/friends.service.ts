@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {AuthService} from '../auth/auth.service';
 import {from, Observable} from 'rxjs';
-import {bufferCount, switchMap} from 'rxjs/operators';
+import {bufferCount, flatMap, switchMap, tap} from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -16,7 +16,9 @@ export class FriendsService {
             switchMap(user => this.afs.collection(`users`).doc(`${user.uid}`).collection('friends').get().pipe(
                 switchMap(res => {
                     return from(res.docs).pipe(
-                        switchMap(friend => this.getFriendData(friend.data().id)),
+                        flatMap(friend => {
+                            return this.getFriendData(friend.data().id);
+                        }),
                         bufferCount(res.size)
                     );
                 })

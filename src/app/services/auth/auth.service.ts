@@ -19,6 +19,7 @@ export class AuthService {
     initUser(): Promise<any> {
         return new Promise((resolve, reject) => this.afAuth.user.subscribe(val => {
             this.authState = val;
+            console.log(val);
             this.user$.next(val);
             resolve();
         }));
