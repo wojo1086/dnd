@@ -2,7 +2,7 @@
 <widget id="com.dmcompanion.tim" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>DM Companion</name>
     <description>A companion app for DMs.</description>
-    <author email="t.wojtylak@gmail.com" href="">DM Companino Team</author>
+    <author email="t.wojtylak@gmail.com" href="">DM Companion Team</author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
