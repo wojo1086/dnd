@@ -1,0 +1,23 @@
+<ng-container *ngIf="campaignData$ | async as campaignData">
+	<ion-header>
+		<ion-toolbar dndColor>
+			<ion-buttons slot="start">
+				<ion-back-button defaultHref="secure/campaigns"></ion-back-button>
+			</ion-buttons>
+
+			<ion-title>{{campaignData.data().name}}</ion-title>
+
+
+			<ion-buttons slot="end">
+				<ion-button [routerLink]="['/secure/edit-campaign', campaignId]">
+					<ion-icon name="create"></ion-icon>
+				</ion-button>
+			</ion-buttons>
+
+		</ion-toolbar>
+	</ion-header>
+
+	<ion-content *ngIf="campaignData$ | async as campaignData">
+
+	</ion-content>
+</ng-container>

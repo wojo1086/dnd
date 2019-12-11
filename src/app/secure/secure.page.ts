@@ -7,43 +7,58 @@ import {AccountService} from '../services/account/account.service';
     styleUrls: ['./secure.page.sass'],
 })
 export class SecurePage implements OnInit {
-
-    appPages = [
+    appPages = [];
+    defaultAppPages = [
         {
             title: 'Home',
             url: '/secure/home',
-            icon: 'home'
+            icon: 'home',
+            index: 0
         },
         {
-            title: 'Campaigns',
-            url: '/secure/campaigns',
-            icon: 'list'
-        },
-        {
-            title: 'LFP',
+            title: 'LFG',
             url: '/secure/looking',
-            icon: 'search'
+            icon: 'search',
+            index: 2
         },
         {
             title: 'Friends',
             url: '/secure/friends',
-            icon: 'contacts'
+            icon: 'contacts',
+            index: 3
         },
         {
             title: 'Messages',
             url: '/secure/messages',
-            icon: 'mail'
+            icon: 'mail',
+            index: 4
         },
         {
             title: 'Account',
             url: '/secure/account',
-            icon: 'person'
+            icon: 'person',
+            index: 5
         }
     ];
 
     constructor(private accountService: AccountService) { }
 
     ngOnInit() {
+        this.accountService.isDM$.subscribe(isDM => {
+            this.appPages = [...this.defaultAppPages];
+            if (isDM) {
+                this.appPages.push({
+                    title: 'Campaigns',
+                    url: '/secure/campaigns',
+                    icon: 'list',
+                    index: 1
+                });
+
+                this.appPages.filter(page => page.index === 2)[0].title = 'LFP';
+            }
+
+            this.appPages.sort((a, b) => a.index - b.index);
+        });
 
     }
 

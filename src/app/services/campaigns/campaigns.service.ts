@@ -29,6 +29,12 @@ export class CampaignsService {
         return this.campaignsCollection.snapshotChanges();
     }
 
+    getCampaign(id: string): Observable<any> {
+        return this.authService.user$.pipe(
+            switchMap(user => this.afs.collection(`users`).doc(`${user.uid}`).collection('campaigns').doc(`${id}`).get())
+        );
+    }
+
     getCampaignsOnce(): Observable<any> {
         return this.authService.user$.pipe(
             switchMap(user => this.afs.collection(`users`).doc(`${user.uid}`).collection('campaigns', ref => ref.orderBy('createdAt')).get())

@@ -29,19 +29,30 @@ export class CampaignsPage implements OnInit {
     }
 
     createNewCampaign() {
-        this.router.navigateByUrl('secure/new-campaign');
+        this.router.navigateByUrl('secure/edit-campaign');
     }
 
     editCampaign(campaign): void {
-        console.log(campaign.id);
+        this.router.navigateByUrl(`secure/campaign/${campaign.id}`);
     }
 
     private getData(): void {
         this.isLoading = true;
         this.campaignsService.getCampaignsOnce().subscribe(res => {
-                console.log(res);
                 this.isLoading = false;
                 this.campaigns = res.docs;
+                this.campaigns = res.docs.map(doc => {
+                    console.log(doc.data());
+                    const data = doc.data();
+                    return {
+                        id: doc.id,
+                        name: data.name,
+                        description: data.description,
+                        createdAt: data.createdAt.seconds * 1000,
+                        nextSession: !!data.nextSession ? new Date(data.nextSession) : '',
+                        startTime: !!data.startTime ? new Date(data.startTime) : ''
+                    };
+                });
                 // this.campaigns = res.map(data => data.payload.doc);
                 // this.campaigns = res.map(data => data.payload.doc.data());
             },

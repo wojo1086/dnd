@@ -1,22 +1,21 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 
-import {EditCampaignPage} from './edit-campaign.page';
+import {CampaignPage} from './campaign.page';
 
 const routes: Routes = [
     {
         path: '',
-        component: EditCampaignPage
+        component: CampaignPage
     },
     {
         path: ':campaignId',
-        component: EditCampaignPage
+        component: CampaignPage
     }
 ];
 
 @NgModule({
     imports: [RouterModule.forChild(routes)],
-    exports: [RouterModule]
+    exports: [RouterModule],
 })
-export class EditCampaignPageRoutingModule {
-}
+export class CampaignPageRoutingModule {}

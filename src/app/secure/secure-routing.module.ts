@@ -21,10 +21,6 @@ const routes: Routes = [
                 loadChildren: () => import('./account/account.module').then( m => m.AccountPageModule)
             },
             {
-                path: 'new-campaign',
-                loadChildren: () => import('./new-campaign/new-campaign.module').then(m => m.NewCampaignPageModule)
-            },
-            {
                 path: 'edit-campaign',
                 loadChildren: () => import('./edit-campaign/edit-campaign.module').then( m => m.EditCampaignPageModule)
             },
@@ -35,9 +31,14 @@ const routes: Routes = [
             {
                 path: 'friends',
                 loadChildren: () => import('./friends/friends.module').then( m => m.FriendsPageModule)
+            },
+            {
+                path: 'campaign',
+                loadChildren: () => import('./campaign/campaign.module').then( m => m.CampaignPageModule)
             }
         ]
     }
+
 ];
 
 @NgModule({

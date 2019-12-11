@@ -5,11 +5,11 @@
 		</ion-toolbar>
 	</ion-header>
 	<ion-content>
-		<ion-list>
+		<ion-list lines="none">
 			<ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
 				<ion-item color="light" [routerLink]="[p.url]">
-					<ion-icon color="primary" slot="start" [name]="p.icon"></ion-icon>
-					<ion-label color="primary">
+					<ion-icon dndColor slot="start" [name]="p.icon"></ion-icon>
+					<ion-label dndColor>
 						{{p.title}}
 					</ion-label>
 				</ion-item>

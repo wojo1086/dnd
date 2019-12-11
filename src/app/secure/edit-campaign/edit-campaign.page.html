@@ -3,20 +3,58 @@
         <ion-buttons slot="start">
             <ion-back-button defaultHref="secure/campaigns"></ion-back-button>
         </ion-buttons>
-        <ion-title>Edit Campaign</ion-title>
+        <ion-title *ngIf="campaignId">Edit Campaign</ion-title>
+        <ion-title *ngIf="!campaignId">New Campaign</ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content color="light">
-    <form [formGroup]="editCampaignForm">
+    <form [formGroup]="newCampaignForm">
         <ion-list>
             <ion-item>
-                <ion-input placeholder="Title" formControlName="name"></ion-input>
+                <ion-label position="floating">Title</ion-label>
+                <ion-input formControlName="name"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label position="floating">Description</ion-label>
+                <ion-textarea rows="8" formControlName="description"></ion-textarea>
+            </ion-item>
+            <ion-item>
+                <ion-label>Next Session</ion-label>
+                <ion-datetime placeholder="Select Date" formControlName="nextSession"></ion-datetime>
+            </ion-item>
+            <ion-item>
+                <ion-label>Start Time</ion-label>
+                <ion-datetime placeholder="Select Time"
+                              formControlName="startTime"
+                              display-format="h:mm A"
+                              picker-format="h:mm: A"></ion-datetime>
+            </ion-item>
+            <ion-item>
+                <ion-label>End Time</ion-label>
+                <ion-datetime placeholder="Select Time"
+                              formControlName="endTime"
+                              display-format="h:mm A"
+                              picker-format="h:mm: A"></ion-datetime>
             </ion-item>
         </ion-list>
-        <ion-textarea placeholder="Write a description..." rows="10" formControlName="description"></ion-textarea>
-    </form>
 
+        <ion-list>
+            <ion-item class="player-list">
+                <ion-label>Players</ion-label>
+                <ion-button slot="end" (click)="openAddFriendsModal()">Add</ion-button>
+            </ion-item>
+            <ion-item-sliding *ngFor="let player of players.controls; let i = index">
+                <ion-item>{{player.value.id}}</ion-item>
+                <ion-item-options side="end">
+                    <ion-item-option (click)="removePlayer(i)">
+                        <ion-icon name="trash"></ion-icon>
+                        Remove
+                    </ion-item-option>
+                </ion-item-options>
+            </ion-item-sliding>
+        </ion-list>
+    </form>
 </ion-content>
 
 <ion-footer>

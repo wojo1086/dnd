@@ -16,17 +16,23 @@
 			</ion-card-content>
 		</ion-card>
 
-		<ion-card *ngFor="let campaign of campaigns" class="campaign-card">
+		<ion-card *ngFor="let campaign of campaigns" class="campaign-card allow-click ion-activatable">
 			<ion-card-header (click)="editCampaign(campaign)">
-				<ion-card-title>{{campaign.data().name}}</ion-card-title>
-				<ion-card-subtitle>Next Session: </ion-card-subtitle>
+				<ion-card-title>{{campaign.name}}</ion-card-title>
+				<ion-card-subtitle>
+					Next Session:
+					<ion-text color="secondary">
+						{{campaign.nextSession | date:'mediumDate'}}
+						{{campaign.startTime | date:'shortTime'}}
+					</ion-text>
+				</ion-card-subtitle>
 			</ion-card-header>
-			<ion-card-content>
 
-				<ng-container (click)="editCampaign(campaign)">
-					<p>{{campaign.data().description}}</p>
-					<ion-text class="created-at" color="medium"><p>{{campaign.data().createdAt.seconds * 1000 | date:'mediumDate'}}</p></ion-text>
-				</ng-container>
+			<ion-ripple-effect></ion-ripple-effect>
+
+			<ion-card-content>
+				<p (click)="editCampaign(campaign)">{{campaign.description}}</p>
+				<ion-text (click)="editCampaign(campaign)" class="created-at" color="medium"><p>{{campaign.createdAt | date:'mediumDate'}}</p></ion-text>
 
 				<div fxLayout="row" class="bottom-bar">
 					<ion-button fxFlex fill="clear">
