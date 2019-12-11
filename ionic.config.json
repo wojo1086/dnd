@@ -1,6 +1,8 @@
 {
   "name": "dnd",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular",
   "id": "8dff9bf6"
 }
