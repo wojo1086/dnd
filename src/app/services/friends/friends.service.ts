@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {AuthService} from '../auth/auth.service';
 import {from, iif, Observable, of} from 'rxjs';
-import {bufferCount, flatMap, mergeMap, switchMap, tap} from 'rxjs/operators';
+import {bufferCount, flatMap, map, mergeMap, switchMap, tap} from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -20,7 +20,12 @@ export class FriendsService {
                         of([]),
                         from(res.docs).pipe(
                             flatMap(friend => {
-                                return this.getFriendData(friend.data().id);
+                                console.log(friend.data());
+                                return this.getFriendData(friend.data().id).pipe(
+                                    map(friendData => {
+                                        return {...friendData.data(), ...friend.data()};
+                                    })
+                                );
                             }),
                             bufferCount(res.size)
                         )

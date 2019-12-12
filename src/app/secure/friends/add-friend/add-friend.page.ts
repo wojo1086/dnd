@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
 import {AddFriendService} from '../../../services/friends/add-friend/add-friend.service';
-import {first} from 'rxjs/operators';
+import {filter, first, map, switchMap, tap, withLatestFrom} from 'rxjs/operators';
 import {NavController, ToastController} from '@ionic/angular';
 import {AuthService} from '../../../services/auth/auth.service';
 import {LoadingService} from '../../../services/loading/loading.service';
+import {FriendsService} from '../../../services/friends/friends.service';
 
 @Component({
     selector: 'add-friend',
@@ -13,9 +14,14 @@ import {LoadingService} from '../../../services/loading/loading.service';
 })
 export class AddFriendPage implements OnInit {
     email: FormControl;
+    users = [];
+    friends$ = this.friendsService.getFriends().pipe(
+        map(friends => friends.map(friend => friend.id))
+    );
 
     constructor(private addFriendService: AddFriendService,
                 private authService: AuthService,
+                private friendsService: FriendsService,
                 private navController: NavController,
                 private loadingService: LoadingService,
                 private toastController: ToastController) {
@@ -23,28 +29,29 @@ export class AddFriendPage implements OnInit {
 
     ngOnInit() {
         this.email = new FormControl('', Validators.required);
-    }
-
-    async add() {
-        await this.loadingService.presentLoading(`Checking for ${this.email.value}...`);
-        this.addFriendService.checkIfFriendExists(this.email.value).subscribe(async (res) => {
-            this.loadingService.cancelLoading();
-            if (res.empty) {
-                this.showToast('Incorrect email address', 'danger');
-            } else if (res.docs[0].ref.id === this.authService.currentUserId) {
-                this.showToast(`You can't be friends you with yourself`, 'danger');
-            } else {
-                await this.loadingService.presentLoading(`Adding friend...`);
-                this.continueWithAddingFriend(res.docs[0].ref.id);
-            }
+        this.email.valueChanges.pipe(
+            tap(() => this.users = []),
+            filter(search => search !== ''),
+            switchMap(search => this.addFriendService.searchUsers(search, `${search}\uf8ff`, 'username')),
+            withLatestFrom(this.friends$)
+        ).subscribe(res => {
+            console.log(res);
+            this.users = res[0].docs.map(doc => {
+                const user = doc.data();
+                user.id = doc.id;
+                user.isLoading = false;
+                user.isFriend = res[1].includes(user.id);
+                return user;
+            }).filter(user => user.id !== this.authService.currentUserId);
         });
     }
 
-    private continueWithAddingFriend(id: string): void {
-        this.addFriendService.addFriend(id).pipe(first()).subscribe(res => {
-            this.loadingService.cancelLoading();
-            this.showToast(`Added ${this.email.value}`, 'success');
-            this.navController.back();
+    add(user) {
+        user.isLoading = true;
+        this.addFriendService.addFriend(user.id).pipe(first()).subscribe(res => {
+            // this.showToast(`Added ${this.email.value}`, 'success');
+            user.isFriend = true;
+            user.isLoading = false;
         });
     }
 

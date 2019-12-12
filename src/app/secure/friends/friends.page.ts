@@ -20,8 +20,11 @@ export class FriendsPage implements OnInit {
     ionViewDidEnter(): void {
         this.isLoading = true;
         this.friendsService.getFriends().pipe(first()).subscribe(res => {
-            console.log(res);
-            this.friends = res;
+            this.friends = res.map(friend => {
+                friend.createdAt = friend.createdAt.seconds * 1000;
+                return friend;
+            });
+            console.log(this.friends);
             this.isLoading = false;
         });
     }

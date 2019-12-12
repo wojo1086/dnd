@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content>
-	<ion-searchbar placeholder="Search by username"></ion-searchbar>
+	<ion-searchbar placeholder="Search by username" [formControl]="search"></ion-searchbar>
 	<ion-segment (ionChange)="segmentChanged($event)" value="friends">
 		<ion-segment-button value="friends">
 			<ion-label>Friends</ion-label>
@@ -19,7 +19,23 @@
 	</ion-segment>
 
 	<div [ngSwitch]="selectedList">
-		<p *ngSwitchCase="'friends'">Friends</p>
+		<p *ngSwitchCase="'friends'">
+			<ion-list lines="full">
+				<ion-item *ngFor="let friend of friends">
+					<ion-label>
+						<ion-text color="secondary">
+							<h2>{{friend.username}}</h2>
+						</ion-text>
+						<ion-text color="medium">
+							<h3>{{friend.firstName}} {{friend.lastName}}</h3>
+						</ion-text>
+						<ion-text color="medium">
+							<h6>Friends since: {{friend.createdAt | date:'mediumDate'}}</h6>
+						</ion-text>
+					</ion-label>
+				</ion-item>
+			</ion-list>
+		</p>
 		<p *ngSwitchCase="'everywhere'">Everywhere</p>
 	</div>
 </ion-content>

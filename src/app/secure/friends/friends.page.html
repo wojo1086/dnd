@@ -18,9 +18,19 @@
 			<ion-text color="medium">You don't have any friends yet.</ion-text>
 		</div>
 
-		<ion-list *ngIf="friends.length">
+		<ion-list *ngIf="friends.length" lines="full">
 			<ion-item *ngFor="let friend of friends">
-				<ion-label>{{friend.data().firstName}}</ion-label>
+				<ion-label>
+					<ion-text color="secondary">
+						<h2>{{friend.username}}</h2>
+					</ion-text>
+					<ion-text color="medium">
+						<h3>{{friend.firstName}} {{friend.lastName}}</h3>
+					</ion-text>
+					<ion-text color="medium">
+						<h6>Friends since: {{friend.createdAt | date:'mediumDate'}}</h6>
+					</ion-text>
+				</ion-label>
 			</ion-item>
 		</ion-list>
 
