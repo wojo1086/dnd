@@ -31,7 +31,7 @@ export class EditCampaignPage implements OnInit {
             startTime: undefined,
             endTime: undefined,
             nextSession: undefined,
-            players: [{id: '1'}]
+            players: []
         };
         this.resetForm(formData);
         if (this.campaignId !== null) {
@@ -51,13 +51,20 @@ export class EditCampaignPage implements OnInit {
 
     async openAddFriendsModal() {
         const modal = await this.modalController.create({
-            component: AddPlayersPage
+            component: AddPlayersPage,
+            componentProps: {
+                players: this.players.value
+            }
         });
         await modal.present();
+        const data = await modal.onWillDismiss();
+        this.players.clear(); // Clear the existing players so we can re-add everyone plus any new ones
+        data.data.players.forEach(player => {
+            this.players.push(this.createPlayer(player));
+        });
     }
 
     removePlayer(index): void {
-        console.log(index);
         this.players.removeAt(index);
     }
 
@@ -116,10 +123,15 @@ export class EditCampaignPage implements OnInit {
     }
 
     private createPlayerFormArray(data): FormGroup[] {
-        return data.map(player => {
-            return new FormGroup({
-                id: new FormControl(player.id)
-            });
+        return data.map(player => this.createPlayer(player));
+    }
+
+    private createPlayer(player): FormGroup {
+        return new FormGroup({
+            id: new FormControl(player.id),
+            username: new FormControl(player.username),
+            firstName: new FormControl(player.firstName),
+            lastName: new FormControl(player.lastName)
         });
     }
 

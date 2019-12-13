@@ -24,8 +24,8 @@ export class AddFriendService {
         );
     }
 
-    searchUsers(start: string, end: string, orderBy: string): Observable<any> {
-        return this.afs.collection(`users`, ref => ref.orderBy(orderBy).startAt(start).endAt(end).limit(10)).get();
+    searchUsers(start: string, end: string, orderBy: string, limit: number): Observable<any> {
+        return this.afs.collection(`users`, ref => ref.orderBy(orderBy).startAt(start).endAt(end).limit(limit)).get();
     }
 
     public checkIfFriendExists(email: string): Observable<any> {

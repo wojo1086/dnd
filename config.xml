@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.dmcompanion.themorongroup" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>DM Companion</name>
-    <description>A companion app for DMs.</description>
+<widget id="com.dndcampaignmanager.themorongroup" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>D&D Campaign Manager</name>
+    <description>A campaign manager for DMs and players.</description>
     <author email="t.wojtylak@gmail.com" href="">DM Companion Team</author>
     <content src="index.html" />
     <access origin="*" />
