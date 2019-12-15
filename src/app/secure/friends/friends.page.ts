@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FriendsService} from '../../services/friends/friends.service';
 import {first} from 'rxjs/operators';
 import {Router} from '@angular/router';
+import {DataStoreService} from '../../services/data-store/data-store.service';
 
 @Component({
     selector: 'friends',
@@ -12,7 +13,9 @@ export class FriendsPage implements OnInit {
     isLoading: boolean = false;
     friends = [];
 
-    constructor(private friendsService: FriendsService, private router: Router) { }
+    constructor(private friendsService: FriendsService,
+                private dataStore: DataStoreService,
+                private router: Router) { }
 
     ngOnInit() {
     }
@@ -21,8 +24,9 @@ export class FriendsPage implements OnInit {
         this.isLoading = true;
         this.friendsService.getFriends().pipe(first()).subscribe(res => {
             this.friends = res.map(friend => {
-                friend.createdAt = friend.createdAt.seconds * 1000;
-                return friend;
+                const copy = {...friend};
+                copy.createdAt = copy.createdAt.seconds * 1000;
+                return copy;
             });
             console.log(this.friends);
             this.isLoading = false;

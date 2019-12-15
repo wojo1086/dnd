@@ -83,6 +83,15 @@ export class EditCampaignPage implements OnInit {
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         };
 
+        this.players.controls.forEach(player => {
+            data.players.push({
+                id: player.get('id').value,
+                username: player.get('username').value,
+                firstName: player.get('firstName').value,
+                lastName: player.get('lastName').value
+            });
+        });
+
         this.loadingService.presentLoading(`Creating ${data.name}...`).then(() => {
             this.campaignsService.createCampaign(data).pipe(first()).subscribe(() => {
                 this.loadingService.cancelLoading();
@@ -119,6 +128,10 @@ export class EditCampaignPage implements OnInit {
             nextSession: data.nextSession,
             startTime: data.startTime,
             endTime: data.endTime
+        });
+        this.players.clear(); // Clear the existing players so we can re-add everyone plus any new ones
+        data.players.forEach(player => {
+            this.players.push(this.createPlayer(player));
         });
     }
 

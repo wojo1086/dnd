@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {catchError, finalize, first} from 'rxjs/operators';
 import {ToastController} from '@ionic/angular';
-import {ErrorHandler} from '../classes/error-handler';
+import {ErrorHandler} from '../classes/error-handler/error-handler';
 import {AuthService} from '../services/auth/auth.service';
 import {LoadingService} from '../services/loading/loading.service';
 import {Router} from '@angular/router';

@@ -1,5 +1,5 @@
 import {Observable, of} from 'rxjs';
-import {HTTP_ERRORS} from '../constants/errors';
+import {HTTP_ERRORS} from '../../constants/errors';
 import {ToastController} from '@ionic/angular';
 
 export class ErrorHandler {

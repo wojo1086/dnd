@@ -49,6 +49,7 @@ export class CampaignsPage implements OnInit {
                         name: data.name,
                         description: data.description,
                         createdAt: data.createdAt.seconds * 1000,
+                        players: data.players || [],
                         nextSession: !!data.nextSession ? new Date(data.nextSession) : '',
                         startTime: !!data.startTime ? new Date(data.startTime) : ''
                     };
