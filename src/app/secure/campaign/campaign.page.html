@@ -1,22 +1,30 @@
-<ng-container *ngIf="campaignData$ | async as campaignData">
-	<ion-header>
-		<ion-toolbar dndColor>
-			<ion-buttons slot="start">
-				<ion-back-button defaultHref="secure/campaigns"></ion-back-button>
-			</ion-buttons>
+<ion-header>
+	<ion-toolbar dndColor>
+		<ion-buttons slot="start">
+			<ion-back-button defaultHref="secure/campaigns"></ion-back-button>
+		</ion-buttons>
 
-			<ion-title>{{campaignData.data().name}}</ion-title>
+		<ion-title>Details</ion-title>
 
-			<ion-buttons slot="end">
-				<ion-button [routerLink]="['/secure/edit-campaign', campaignId]">
-					<ion-icon name="create"></ion-icon>
-				</ion-button>
-			</ion-buttons>
+		<ion-buttons slot="end" class="header-save-button">
+			<ion-button [routerLink]="['/secure/edit-campaign', campaignId]">
+				Edit
+			</ion-button>
+		</ion-buttons>
 
-		</ion-toolbar>
-	</ion-header>
+	</ion-toolbar>
+</ion-header>
 
-	<ion-content *ngIf="campaignData$ | async as campaignData">
+<ion-content *ngIf="!!campaign">
+	<ion-text color="dark">
+		<h5>{{campaign.name}}</h5>
+	</ion-text>
 
-	</ion-content>
-</ng-container>
+	<ion-card>
+		<ion-card-header>
+			<ion-card-subtitle color="primary">Location</ion-card-subtitle>
+		</ion-card-header>
+
+	</ion-card>
+
+</ion-content>

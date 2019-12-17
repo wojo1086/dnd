@@ -40,7 +40,6 @@ export class FriendsService {
                                 );
                             }),
                             bufferCount(res.size),
-                            tap(console.log),
                             tap(friends => this.dataStore.add('friends', 'friendsList', friends))
                         )
                     )

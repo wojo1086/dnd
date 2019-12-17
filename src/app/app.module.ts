@@ -14,6 +14,7 @@ import {AngularFireModule} from '@angular/fire';
 import {environment} from '../environments/environment';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {AngularFirestore} from '@angular/fire/firestore';
+import {AngularFireStorageModule} from '@angular/fire/storage';
 
 export function initializeApp(authService: AuthService) {
     return (): Promise<any> => {
@@ -29,7 +30,8 @@ export function initializeApp(authService: AuthService) {
         IonicModule.forRoot(),
         AppRoutingModule,
         BrowserAnimationsModule,
-        AngularFireModule.initializeApp(environment.firebase)
+        AngularFireModule.initializeApp(environment.firebase),
+        AngularFireStorageModule
     ],
     providers: [
         AngularFireAuth,

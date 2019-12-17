@@ -11,19 +11,21 @@ import {CampaignsService} from '../../services/campaigns/campaigns.service';
 export class CampaignPage implements OnInit {
     campaignId: string;
     routeParams$ = this.route.paramMap;
-    campaignData$ = this.routeParams$.pipe(
-        switchMap(params => {
-            this.campaignId = params.get('campaignId');
-            return this.campaignsService.getCampaign(this.campaignId);
-        }),
-        first()
-    );
+    campaign;
 
     constructor(private route: ActivatedRoute,
                 private campaignsService: CampaignsService) { }
 
     ngOnInit() {
-
+        this.routeParams$.pipe(
+            switchMap(params => {
+                this.campaignId = params.get('campaignId');
+                return this.campaignsService.getCampaign(this.campaignId);
+            }),
+            first()
+        ).subscribe(data => {
+            this.campaign = data;
+        });
     }
 
 }

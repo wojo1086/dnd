@@ -7,6 +7,8 @@ import * as firebase from 'firebase/app';
 import {LoadingService} from '../../services/loading/loading.service';
 import {ActivatedRoute} from '@angular/router';
 import {AddPlayersPage} from '../../modals/add-players/add-players.page';
+import {FireStorageService} from '../../services/fire-storage/fire-storage.service';
+import {MapsPage} from '../../modals/maps/maps.page';
 
 @Component({
     selector: 'app-edit-campaign',
@@ -16,15 +18,21 @@ import {AddPlayersPage} from '../../modals/add-players/add-players.page';
 export class EditCampaignPage implements OnInit {
     newCampaignForm: FormGroup;
     campaignId;
+    avatar = '';
+    opacity = 1;
 
     constructor(private campaignsService: CampaignsService,
                 private route: ActivatedRoute,
+                private fireStorage: FireStorageService,
                 private modalController: ModalController,
                 private loadingService: LoadingService,
                 private navController: NavController) { }
 
     ngOnInit() {
         this.campaignId = this.route.snapshot.paramMap.get('campaignId');
+        this.fireStorage.getImage('d20.png').pipe(first()).subscribe(img => {
+            this.avatar = img;
+        });
         const formData = {
             name: '',
             description: '',
@@ -45,7 +53,7 @@ export class EditCampaignPage implements OnInit {
 
     private getData(): void {
         this.campaignsService.getCampaign(this.campaignId).pipe(first()).subscribe(res => {
-            this.patchForm(res.data());
+            this.patchForm(res);
         });
     }
 
@@ -64,14 +72,61 @@ export class EditCampaignPage implements OnInit {
         });
     }
 
+    async openMapsModal() {
+        const modal = await this.modalController.create({
+            component: MapsPage,
+            showBackdrop: false,
+            cssClass: 'remove-backdrop',
+            componentProps: {
+                title: 'Location'
+            }
+        });
+        this.opacity = 0;
+        await modal.present();
+        const data = await modal.onWillDismiss();
+        this.opacity = 1;
+    }
+
     removePlayer(index): void {
         this.players.removeAt(index);
     }
 
-    submitForm(): void {
+    createCampaign(): void {
         if (this.newCampaignForm.invalid) {
             return;
         }
+
+        const saveData = this.prepareDataForSaving();
+        saveData['createdAt'] = firebase.firestore.FieldValue.serverTimestamp();
+
+        this.loadingService.presentLoading(`Creating ${saveData.name}...`).then(() => {
+            this.campaignsService.createCampaign(saveData).pipe(first()).subscribe(() => {
+                this.loadingService.cancelLoading();
+                this.navController.back();
+            });
+        });
+    }
+
+    updateCampaign(): void {
+        if (this.newCampaignForm.invalid) {
+            return;
+        }
+
+        const saveData = this.prepareDataForSaving();
+
+        this.loadingService.presentLoading(`Saving ${saveData.name}...`).then(() => {
+            this.campaignsService.updateCampaign(this.campaignId, saveData).pipe(first()).subscribe(() => {
+                this.loadingService.cancelLoading();
+                this.navController.back();
+            });
+        });
+    }
+
+    segmentChanged(evt) {
+        console.log(evt);
+    }
+
+    private prepareDataForSaving() {
         const data = {
             name: this.newCampaignForm.get('name').value,
             description: this.newCampaignForm.get('description').value,
@@ -79,7 +134,6 @@ export class EditCampaignPage implements OnInit {
             endTime: this.newCampaignForm.get('endTime').value || '',
             nextSession: this.newCampaignForm.get('nextSession').value || '',
             players: [],
-            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         };
 
@@ -91,13 +145,7 @@ export class EditCampaignPage implements OnInit {
                 lastName: player.get('lastName').value
             });
         });
-
-        this.loadingService.presentLoading(`Creating ${data.name}...`).then(() => {
-            this.campaignsService.createCampaign(data).pipe(first()).subscribe(() => {
-                this.loadingService.cancelLoading();
-                this.navController.back();
-            });
-        });
+        return data;
     }
 
     private resetForm(data): void {

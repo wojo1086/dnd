@@ -5,10 +5,14 @@
         </ion-buttons>
         <ion-title *ngIf="campaignId">Edit Campaign</ion-title>
         <ion-title *ngIf="!campaignId">New Campaign</ion-title>
+        <ion-buttons slot="end" class="header-save-button">
+            <ion-button *ngIf="!campaignId" [disabled]="newCampaignForm.invalid" (click)="createCampaign()">Save</ion-button>
+            <ion-button *ngIf="campaignId" [disabled]="newCampaignForm.invalid" (click)="updateCampaign()">Update</ion-button>
+        </ion-buttons>
     </ion-toolbar>
 </ion-header>
 
-<ion-content color="light">
+<ion-content color="light" [ngStyle]="{'opacity': opacity}">
     <form [formGroup]="newCampaignForm">
         <ion-list>
             <ion-item>
@@ -37,6 +41,10 @@
                               display-format="h:mm A"
                               picker-format="h:mm: A"></ion-datetime>
             </ion-item>
+            <ion-item (click)="openMapsModal()">
+                <ion-label>Location</ion-label>
+                <ion-note slot="end" color="secondary">11802 Meadow Branch Drive, Apt. 527 Orlando, FL, 32825</ion-note>
+            </ion-item>
         </ion-list>
 
         <ion-list lines="full">
@@ -63,9 +71,25 @@
                 </ion-item-options>
             </ion-item-sliding>
         </ion-list>
+<!--        <div class="players-wrapper">-->
+<!--            <div class="players" scrollX="true">-->
+<!--                <ion-card *ngFor="let player of players.controls; let i = index">-->
+<!--                    <ion-item lines="none">-->
+<!--                        <ion-avatar slot="start">-->
+<!--                            <img [src]="avatar">-->
+<!--                        </ion-avatar>-->
+<!--                        <ion-label>-->
+<!--                            <p>-->
+<!--                                {{player.get('username').value}}-->
+<!--                            </p>-->
+<!--                        </ion-label>-->
+<!--                    </ion-item>-->
+<!--                    <ion-card-content>-->
+
+<!--                    </ion-card-content>-->
+<!--                </ion-card>-->
+<!--            </div>-->
+<!--        </div>-->
+
     </form>
 </ion-content>
-
-<ion-footer>
-    <ion-button expand="block" [disabled]="newCampaignForm.invalid" (click)="submitForm()">Submit</ion-button>
-</ion-footer>

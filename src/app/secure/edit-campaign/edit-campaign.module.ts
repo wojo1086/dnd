@@ -10,6 +10,7 @@ import {EditCampaignPage} from './edit-campaign.page';
 import {DndColorModule} from '../../directives/dnd-toolbar.module';
 import {AddPlayersPageModule} from '../../modals/add-players/add-players.module';
 import {AddPlayersPage} from '../../modals/add-players/add-players.page';
+import {MapsPageModule} from '../../modals/maps/maps.module';
 
 @NgModule({
     imports: [
@@ -19,7 +20,8 @@ import {AddPlayersPage} from '../../modals/add-players/add-players.page';
         AddPlayersPageModule,
         EditCampaignPageRoutingModule,
         ReactiveFormsModule,
-        DndColorModule
+        DndColorModule,
+        MapsPageModule
     ],
     declarations: [EditCampaignPage],
     entryComponents: [AddPlayersPage]

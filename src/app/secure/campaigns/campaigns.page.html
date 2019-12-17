@@ -32,7 +32,7 @@
 
 			<ion-card-content>
 				<p (click)="editCampaign(campaign)">{{campaign.description}}</p>
-				<ion-text (click)="editCampaign(campaign)" class="created-at" color="medium"><p>{{campaign.createdAt | date:'mediumDate'}}</p></ion-text>
+				<ion-text (click)="editCampaign(campaign)" class="created-at" color="medium"><p>{{campaign.createdAtConverted | date:'mediumDate'}}</p></ion-text>
 
 				<div fxLayout="row" class="bottom-bar">
 					<ion-button fxFlex fill="clear">

@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
-import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
-import {catchError} from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {Observable, of, throwError} from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -27,7 +26,6 @@ export class DataStoreService {
 
     public clear(key1: string, key2: string) {
         if (this.store.hasOwnProperty(key1) && this.store[key1].hasOwnProperty(key2)) {
-            this.store[key1][key2].complete();
             this.store[key1][key2] = undefined;
         }
     }

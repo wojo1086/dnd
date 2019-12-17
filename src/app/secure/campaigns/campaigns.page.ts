@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {CampaignsService, ICampaign} from '../../services/campaigns/campaigns.service';
 import {Router} from '@angular/router';
+import {first} from 'rxjs/operators';
+import {UtilitiesService} from '../../services/utilities/utilities.service';
 
 @Component({
     selector: 'app-campaigns',
@@ -13,6 +15,7 @@ export class CampaignsPage implements OnInit {
     isLoading = false;
 
     constructor(private campaignsService: CampaignsService,
+                private utilities: UtilitiesService,
                 private router: Router) { }
 
     ngOnInit() {
@@ -38,21 +41,12 @@ export class CampaignsPage implements OnInit {
 
     private getData(): void {
         this.isLoading = true;
-        this.campaignsService.getCampaignsOnce().subscribe(res => {
+        this.campaignsService.getCampaigns().subscribe(res => {
                 this.isLoading = false;
-                this.campaigns = res.docs;
-                this.campaigns = res.docs.map(doc => {
-                    console.log(doc.data());
-                    const data = doc.data();
-                    return {
-                        id: doc.id,
-                        name: data.name,
-                        description: data.description,
-                        createdAt: data.createdAt.seconds * 1000,
-                        players: data.players || [],
-                        nextSession: !!data.nextSession ? new Date(data.nextSession) : '',
-                        startTime: !!data.startTime ? new Date(data.startTime) : ''
-                    };
+                this.campaigns = res.map(campaign => {
+                    const data = {...campaign};
+                    data.createdAtConverted = campaign.createdAt ? this.utilities.convertFirebaseTimestampToDate(campaign.createdAt) : '';
+                    return data;
                 });
                 // this.campaigns = res.map(data => data.payload.doc);
                 // this.campaigns = res.map(data => data.payload.doc.data());
