@@ -23,6 +23,7 @@ export class MapsPage implements OnInit {
     }
 
     dismissModal(): void {
+        this.map.remove();
         this.modalController.dismiss();
     }
 
