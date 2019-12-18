@@ -2,6 +2,7 @@ import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {ModalController} from '@ionic/angular';
 import {Environment, GoogleMap, GoogleMapOptions, GoogleMaps, GoogleMapsEvent, Marker} from '@ionic-native/google-maps';
 import {environment} from '../../../environments/environment';
+import {Geolocation} from '@ionic-native/geolocation/ngx';
 
 @Component({
     selector: 'maps',
@@ -13,7 +14,7 @@ export class MapsPage implements OnInit {
     @ViewChild('map', {static: true}) mapElement: ElementRef;
     map: GoogleMap;
 
-    constructor(private modalController: ModalController) { }
+    constructor(private modalController: ModalController, private geoLocation: Geolocation) { }
 
     ngOnInit() {
     }

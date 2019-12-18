@@ -93,9 +93,7 @@
         "UPDATE_API": "https://api.ionicjs.com"
       },
       "cordova-plugin-googlemaps": {},
-      "cordova-plugin-geolocation": {
-        "GEOLOCATION_USAGE_DESCRIPTION": "To locate you"
-      }
+      "cordova-plugin-geolocation": {}
     },
     "platforms": [
       "android"
