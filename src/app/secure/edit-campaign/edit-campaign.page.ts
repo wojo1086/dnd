@@ -137,7 +137,7 @@ export class EditCampaignPage implements OnInit {
     }
 
     segmentChanged(evt) {
-        console.log(evt);
+        this.selectedTab = evt.detail.value;
     }
 
     private prepareDataForSaving() {

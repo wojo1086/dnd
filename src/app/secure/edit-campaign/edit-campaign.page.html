@@ -26,73 +26,77 @@
 
         <div [ngSwitch]="selectedTab">
             <ion-list lines="full" *ngSwitchCase="'basic'">
+                <ion-item>
+                    <ion-label position="floating" color="medium">Title <ion-text color="danger">*</ion-text></ion-label>
+                    <ion-input formControlName="name"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label position="floating" color="medium">Description</ion-label>
+                    <ion-textarea rows="8" formControlName="description"></ion-textarea>
+                </ion-item>
+                <ion-item>
+                    <ion-label color="medium">Next Session</ion-label>
+                    <ion-datetime placeholder="Select Date" formControlName="nextSession"></ion-datetime>
+                </ion-item>
+                <ion-item>
+                    <ion-label color="medium">Start Time</ion-label>
+                    <ion-datetime placeholder="Select Time"
+                                  formControlName="startTime"
+                                  display-format="h:mm A"
+                                  picker-format="h:mm: A"></ion-datetime>
+                </ion-item>
+                <ion-item>
+                    <ion-label color="medium">End Time</ion-label>
+                    <ion-datetime placeholder="Select Time"
+                                  formControlName="endTime"
+                                  display-format="h:mm A"
+                                  picker-format="h:mm: A"></ion-datetime>
+                </ion-item>
+                <ion-item (click)="openPlacesModal()">
+                    <ion-label position="floating" color="medium">Location</ion-label>
+                    <ion-input formControlName="location"></ion-input>
+                    <!--                <ion-note slot="end" color="secondary">11802 Meadow Branch Drive, Apt. 527 Orlando, FL, 32825</ion-note>-->
+                </ion-item>
+                <ion-item>
+                    <ion-label color="medium">Image</ion-label>
+                </ion-item>
             </ion-list>
 
             <ion-list lines="full" *ngSwitchCase="'players'">
+<!--                <ion-item class="player-list">-->
+<!--                    <ion-label>Players</ion-label>-->
+<!--                    <ion-button slot="end" (click)="openAddFriendsModal()">Add</ion-button>-->
+<!--                </ion-item>-->
+                <ion-item-sliding *ngFor="let player of players.controls; let i = index">
+                    <ion-item>
+                        <ion-avatar slot="start">
+                            <img [src]="avatar">
+                        </ion-avatar>
+                        <ion-label>
+                            <ion-text color="secondary">
+                                <h2>{{player.get('username').value}}</h2>
+                            </ion-text>
+                            <ion-text color="medium">
+                                <h3>{{player.get('firstName').value}} {{player.get('lastName').value}}</h3>
+                            </ion-text>
+                        </ion-label>
+                    </ion-item>
+                    <ion-item-options side="end">
+                        <ion-item-option (click)="removePlayer(i)">
+                            <ion-icon name="trash"></ion-icon>
+                            Remove
+                        </ion-item-option>
+                    </ion-item-options>
+                </ion-item-sliding>
             </ion-list>
+
+            <ion-fab *ngIf="selectedTab === 'players'" vertical="bottom" horizontal="end" slot="fixed">
+                <ion-fab-button (click)="openAddFriendsModal()">
+                    <ion-icon name="add"></ion-icon>
+                </ion-fab-button>
+            </ion-fab>
         </div>
 
-        <ion-list>
-            <ion-item>
-                <ion-label position="floating">Title</ion-label>
-                <ion-input formControlName="name"></ion-input>
-            </ion-item>
-            <ion-item>
-                <ion-label position="floating">Description</ion-label>
-                <ion-textarea rows="8" formControlName="description"></ion-textarea>
-            </ion-item>
-            <ion-item>
-                <ion-label>Next Session</ion-label>
-                <ion-datetime placeholder="Select Date" formControlName="nextSession"></ion-datetime>
-            </ion-item>
-            <ion-item>
-                <ion-label>Start Time</ion-label>
-                <ion-datetime placeholder="Select Time"
-                              formControlName="startTime"
-                              display-format="h:mm A"
-                              picker-format="h:mm: A"></ion-datetime>
-            </ion-item>
-            <ion-item>
-                <ion-label>End Time</ion-label>
-                <ion-datetime placeholder="Select Time"
-                              formControlName="endTime"
-                              display-format="h:mm A"
-                              picker-format="h:mm: A"></ion-datetime>
-            </ion-item>
-            <ion-item (click)="openPlacesModal()">
-                <ion-label position="floating">Location</ion-label>
-                <ion-input formControlName="location"></ion-input>
-<!--                <ion-note slot="end" color="secondary">11802 Meadow Branch Drive, Apt. 527 Orlando, FL, 32825</ion-note>-->
-            </ion-item>
-        </ion-list>
-
-        <ion-list lines="full">
-            <ion-item class="player-list">
-                <ion-label>Players</ion-label>
-                <ion-button slot="end" (click)="openAddFriendsModal()">Add</ion-button>
-            </ion-item>
-            <ion-item-sliding *ngFor="let player of players.controls; let i = index">
-                <ion-item>
-                    <ion-avatar slot="start">
-                        <img [src]="avatar">
-                    </ion-avatar>
-                    <ion-label>
-                        <ion-text color="secondary">
-                            <h2>{{player.get('username').value}}</h2>
-                        </ion-text>
-                        <ion-text color="medium">
-                            <h3>{{player.get('firstName').value}} {{player.get('lastName').value}}</h3>
-                        </ion-text>
-                    </ion-label>
-                </ion-item>
-                <ion-item-options side="end">
-                    <ion-item-option (click)="removePlayer(i)">
-                        <ion-icon name="trash"></ion-icon>
-                        Remove
-                    </ion-item-option>
-                </ion-item-options>
-            </ion-item-sliding>
-        </ion-list>
 <!--        <div class="players-wrapper">-->
 <!--            <div class="players" scrollX="true">-->
 <!--                <ion-card *ngFor="let player of players.controls; let i = index">-->
