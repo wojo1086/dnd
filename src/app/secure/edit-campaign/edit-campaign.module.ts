@@ -11,6 +11,7 @@ import {DndColorModule} from '../../directives/dnd-toolbar.module';
 import {AddPlayersPageModule} from '../../modals/add-players/add-players.module';
 import {AddPlayersPage} from '../../modals/add-players/add-players.page';
 import {MapsPageModule} from '../../modals/maps/maps.module';
+import {PlacesPageModule} from '../../modals/places/places.module';
 
 @NgModule({
     imports: [
@@ -21,7 +22,8 @@ import {MapsPageModule} from '../../modals/maps/maps.module';
         EditCampaignPageRoutingModule,
         ReactiveFormsModule,
         DndColorModule,
-        MapsPageModule
+        MapsPageModule,
+        PlacesPageModule
     ],
     declarations: [EditCampaignPage],
     entryComponents: [AddPlayersPage]

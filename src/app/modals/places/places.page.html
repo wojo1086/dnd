@@ -1,0 +1,23 @@
+<ion-header>
+	<ion-toolbar dndColor>
+		<ion-buttons slot="start">
+			<ion-button (click)="dismissModal()">
+				<ion-icon name="arrow-back"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+		<ion-title>Location</ion-title>
+		<ion-buttons slot="end" class="end-slot">
+			<ion-button (click)="dismissModal()">Add</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<ion-searchbar [formControl]="location" placeholder="Eg: 123 Main Street"></ion-searchbar>
+
+	<ion-list [hidden]="!autoCompleteItems.length">
+		<ion-item *ngFor="let item of autoCompleteItems" (click)="selectLocation(item)">
+			{{item.description}}
+		</ion-item>
+	</ion-list>
+</ion-content>

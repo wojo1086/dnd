@@ -33,6 +33,7 @@ const routes: Routes = [
         },
         loadChildren: () => import('./secure/secure.module').then(m => m.SecurePageModule)
     }
+
 ];
 
 @NgModule({

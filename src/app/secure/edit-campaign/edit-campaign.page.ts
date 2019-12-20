@@ -9,6 +9,7 @@ import {ActivatedRoute} from '@angular/router';
 import {AddPlayersPage} from '../../modals/add-players/add-players.page';
 import {FireStorageService} from '../../services/fire-storage/fire-storage.service';
 import {MapsPage} from '../../modals/maps/maps.page';
+import {PlacesPage} from '../../modals/places/places.page';
 
 @Component({
     selector: 'app-edit-campaign',
@@ -17,6 +18,7 @@ import {MapsPage} from '../../modals/maps/maps.page';
 })
 export class EditCampaignPage implements OnInit {
     newCampaignForm: FormGroup;
+    selectedTab: string = 'basic';
     campaignId;
     avatar = '';
     opacity = 1;
@@ -29,6 +31,7 @@ export class EditCampaignPage implements OnInit {
                 private navController: NavController) { }
 
     ngOnInit() {
+
         this.campaignId = this.route.snapshot.paramMap.get('campaignId');
         this.fireStorage.getImage('d20.png').pipe(first()).subscribe(img => {
             this.avatar = img;
@@ -39,6 +42,7 @@ export class EditCampaignPage implements OnInit {
             startTime: undefined,
             endTime: undefined,
             nextSession: undefined,
+            location: '',
             players: []
         };
         this.resetForm(formData);
@@ -70,6 +74,16 @@ export class EditCampaignPage implements OnInit {
         data.data.players.forEach(player => {
             this.players.push(this.createPlayer(player));
         });
+    }
+
+    async openPlacesModal() {
+        const modal = await this.modalController.create({
+            component: PlacesPage,
+            componentProps: {
+                location: this.newCampaignForm.get('location')
+            }
+        });
+        await modal.present();
     }
 
     async openMapsModal() {
@@ -133,6 +147,7 @@ export class EditCampaignPage implements OnInit {
             startTime: this.newCampaignForm.get('startTime').value || '',
             endTime: this.newCampaignForm.get('endTime').value || '',
             nextSession: this.newCampaignForm.get('nextSession').value || '',
+            location: this.newCampaignForm.get('location').value || '',
             players: [],
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         };
@@ -155,6 +170,7 @@ export class EditCampaignPage implements OnInit {
             startTime: new FormControl({value: data.startTime, disabled: true}),
             endTime: new FormControl({value: data.endTime, disabled: true}),
             nextSession: new FormControl(data.nextSession),
+            location: new FormControl(data.location),
             players: new FormArray(this.createPlayerFormArray(data.players))
         });
 
@@ -175,7 +191,8 @@ export class EditCampaignPage implements OnInit {
             description: data.description,
             nextSession: data.nextSession,
             startTime: data.startTime,
-            endTime: data.endTime
+            endTime: data.endTime,
+            location: data.location
         });
         this.players.clear(); // Clear the existing players so we can re-add everyone plus any new ones
         data.players.forEach(player => {
