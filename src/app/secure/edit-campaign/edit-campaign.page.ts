@@ -21,6 +21,7 @@ export class EditCampaignPage implements OnInit {
     selectedTab: string = 'basic';
     campaignId;
     avatar = '';
+    campaignImage = '';
     opacity = 1;
 
     constructor(private campaignsService: CampaignsService,
@@ -35,6 +36,9 @@ export class EditCampaignPage implements OnInit {
         this.campaignId = this.route.snapshot.paramMap.get('campaignId');
         this.fireStorage.getImage('d20.png').pipe(first()).subscribe(img => {
             this.avatar = img;
+        });
+        this.fireStorage.getImage('campaign-placeholder.png').pipe(first()).subscribe(img => {
+            this.campaignImage = img;
         });
         const formData = {
             name: '',
@@ -59,6 +63,10 @@ export class EditCampaignPage implements OnInit {
         this.campaignsService.getCampaign(this.campaignId).pipe(first()).subscribe(res => {
             this.patchForm(res);
         });
+    }
+
+    editImage() {
+
     }
 
     async openAddFriendsModal() {
