@@ -15,6 +15,9 @@ import {environment} from '../environments/environment';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {AngularFireStorageModule} from '@angular/fire/storage';
+import {File} from '@ionic-native/file/ngx';
+import {WebView} from '@ionic-native/ionic-webview/ngx';
+import {FileTransfer} from '@ionic-native/file-transfer/ngx';
 
 export function initializeApp(authService: AuthService) {
     return (): Promise<any> => {
@@ -38,6 +41,9 @@ export function initializeApp(authService: AuthService) {
         AngularFirestore,
         StatusBar,
         SplashScreen,
+        File,
+        FileTransfer,
+        WebView,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
         {
             provide: APP_INITIALIZER,
