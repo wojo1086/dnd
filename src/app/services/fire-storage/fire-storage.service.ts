@@ -22,12 +22,13 @@ export class FireStorageService {
             switchMap(found => {
                 if (found) {
                     return of(this.webView.convertFileSrc(this.file.dataDirectory + image));
-                } else {
-                    const ref = this.storage.ref(image);
-                    return ref.getDownloadURL().pipe(
-                        switchMap(dUrl => this.downloadFile(dUrl, image)),
-                    );
                 }
+            }),
+            catchError(() => {
+                const ref = this.storage.ref(image);
+                return ref.getDownloadURL().pipe(
+                    switchMap(dUrl => this.downloadFile(dUrl, image)),
+                );
             })
         );
     }
