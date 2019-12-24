@@ -28,7 +28,13 @@
 
 		<div [ngSwitch]="selectedTab">
 			<ng-container *ngSwitchCase="'basic'">
-				<ion-img [src]="campaignImage" (click)="editImage()"></ion-img>
+				<div class="edit-image">
+					<ion-img [src]="campaignImage" (click)="editImage()"></ion-img>
+					<ion-button (click)="openImageActionSheet()">
+						<ion-icon name="photos"></ion-icon>
+						Edit
+					</ion-button>
+				</div>
 				<ion-list lines="full">
 					<ion-item>
 						<ion-label position="floating" color="medium">Title

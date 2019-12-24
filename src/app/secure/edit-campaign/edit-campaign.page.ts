@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {CampaignsService} from '../../services/campaigns/campaigns.service';
 import {first} from 'rxjs/operators';
-import {ModalController, NavController} from '@ionic/angular';
+import {ActionSheetController, ModalController, NavController} from '@ionic/angular';
 import * as firebase from 'firebase/app';
 import {LoadingService} from '../../services/loading/loading.service';
 import {ActivatedRoute} from '@angular/router';
@@ -26,6 +26,7 @@ export class EditCampaignPage implements OnInit {
 
     constructor(private campaignsService: CampaignsService,
                 private route: ActivatedRoute,
+                private actionSheetController: ActionSheetController,
                 private fireStorage: FireStorageService,
                 private modalController: ModalController,
                 private loadingService: LoadingService,
@@ -107,6 +108,23 @@ export class EditCampaignPage implements OnInit {
         await modal.present();
         const data = await modal.onWillDismiss();
         this.opacity = 1;
+    }
+
+    async openImageActionSheet() {
+        const actionSheet = await this.actionSheetController.create({
+            buttons: [
+                {
+                    text: 'WGC Gallery',
+                    icon: 'photos',
+                    handler: this.openWGCGallery.bind(this)
+                }
+            ]
+        });
+        await actionSheet.present();
+    }
+
+    private openWGCGallery() {
+
     }
 
     removePlayer(index): void {
