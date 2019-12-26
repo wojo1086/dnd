@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {CampaignsService} from '../../services/campaigns/campaigns.service';
-import {first} from 'rxjs/operators';
+import {first, startWith, switchMap, tap} from 'rxjs/operators';
 import {ActionSheetController, ModalController, NavController} from '@ionic/angular';
 import * as firebase from 'firebase/app';
 import {LoadingService} from '../../services/loading/loading.service';
@@ -10,6 +10,7 @@ import {AddPlayersPage} from '../../modals/add-players/add-players.page';
 import {FireStorageService} from '../../services/fire-storage/fire-storage.service';
 import {MapsPage} from '../../modals/maps/maps.page';
 import {PlacesPage} from '../../modals/places/places.page';
+import {WgcGalleryPage} from '../../modals/wgc-gallery/wgc-gallery.page';
 
 @Component({
     selector: 'app-edit-campaign',
@@ -38,9 +39,6 @@ export class EditCampaignPage implements OnInit {
         this.fireStorage.getImage('d20.png').pipe(first()).subscribe(img => {
             this.avatar = img;
         });
-        this.fireStorage.getImage('campaign-placeholder.png').pipe(first()).subscribe(img => {
-            this.campaignImage = img;
-        });
         const formData = {
             name: '',
             description: '',
@@ -48,6 +46,7 @@ export class EditCampaignPage implements OnInit {
             endTime: undefined,
             nextSession: undefined,
             location: '',
+            image: 'campaign-placeholder.png',
             players: []
         };
         this.resetForm(formData);
@@ -95,20 +94,20 @@ export class EditCampaignPage implements OnInit {
         await modal.present();
     }
 
-    async openMapsModal() {
-        const modal = await this.modalController.create({
-            component: MapsPage,
-            showBackdrop: false,
-            cssClass: 'remove-backdrop',
-            componentProps: {
-                title: 'Location'
-            }
-        });
-        this.opacity = 0;
-        await modal.present();
-        const data = await modal.onWillDismiss();
-        this.opacity = 1;
-    }
+    // async openMapsModal() {
+    //     const modal = await this.modalController.create({
+    //         component: MapsPage,
+    //         showBackdrop: false,
+    //         cssClass: 'remove-backdrop',
+    //         componentProps: {
+    //             title: 'Location'
+    //         }
+    //     });
+    //     this.opacity = 0;
+    //     await modal.present();
+    //     const data = await modal.onWillDismiss();
+    //     this.opacity = 1;
+    // }
 
     async openImageActionSheet() {
         const actionSheet = await this.actionSheetController.create({
@@ -123,8 +122,16 @@ export class EditCampaignPage implements OnInit {
         await actionSheet.present();
     }
 
-    private openWGCGallery() {
-
+    private async openWGCGallery() {
+        const modal = await this.modalController.create({
+            component: WgcGalleryPage,
+        });
+        await modal.present();
+        const data = await modal.onWillDismiss();
+        if (!!data.data) {
+            // this.campaignImage = data.data.image.fullPath;
+            this.newCampaignForm.get('image').patchValue(data.data.image.minPath);
+        }
     }
 
     removePlayer(index): void {
@@ -174,6 +181,7 @@ export class EditCampaignPage implements OnInit {
             endTime: this.newCampaignForm.get('endTime').value || '',
             nextSession: this.newCampaignForm.get('nextSession').value || '',
             location: this.newCampaignForm.get('location').value || '',
+            image: this.newCampaignForm.get('image').value,
             players: [],
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         };
@@ -197,7 +205,15 @@ export class EditCampaignPage implements OnInit {
             endTime: new FormControl({value: data.endTime, disabled: true}),
             nextSession: new FormControl(data.nextSession),
             location: new FormControl(data.location),
+            image: new FormControl(data.image),
             players: new FormArray(this.createPlayerFormArray(data.players))
+        });
+
+        this.newCampaignForm.get('image').valueChanges.pipe(
+            startWith('campaign-placeholder.png'),
+            switchMap(img => this.fireStorage.getImage(img))
+        ).subscribe(val => {
+            this.campaignImage = val;
         });
 
         this.newCampaignForm.get('nextSession').valueChanges.subscribe(val => {
@@ -218,8 +234,10 @@ export class EditCampaignPage implements OnInit {
             nextSession: data.nextSession,
             startTime: data.startTime,
             endTime: data.endTime,
-            location: data.location
+            location: data.location,
+            image: data.image
         });
+
         this.players.clear(); // Clear the existing players so we can re-add everyone plus any new ones
         data.players.forEach(player => {
             this.players.push(this.createPlayer(player));

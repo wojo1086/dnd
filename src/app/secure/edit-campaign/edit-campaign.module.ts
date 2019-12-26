@@ -12,6 +12,8 @@ import {AddPlayersPageModule} from '../../modals/add-players/add-players.module'
 import {AddPlayersPage} from '../../modals/add-players/add-players.page';
 import {MapsPageModule} from '../../modals/maps/maps.module';
 import {PlacesPageModule} from '../../modals/places/places.module';
+import {WgcGalleryPage} from '../../modals/wgc-gallery/wgc-gallery.page';
+import {WgcGalleryPageModule} from '../../modals/wgc-gallery/wgc-gallery.module';
 
 @NgModule({
     imports: [
@@ -23,10 +25,11 @@ import {PlacesPageModule} from '../../modals/places/places.module';
         ReactiveFormsModule,
         DndColorModule,
         MapsPageModule,
-        PlacesPageModule
+        PlacesPageModule,
+        WgcGalleryPageModule
     ],
     declarations: [EditCampaignPage],
-    entryComponents: [AddPlayersPage]
+    entryComponents: [AddPlayersPage, WgcGalleryPage]
 })
 export class EditCampaignPageModule {
 }

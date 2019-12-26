@@ -1,0 +1,21 @@
+<ion-header>
+	<ion-toolbar dndColor>
+		<ion-buttons slot="start">
+			<ion-button (click)="dismissModal()">
+				<ion-icon name="arrow-back"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+		<ion-title>WGC Gallery</ion-title>
+		<ion-buttons slot="end" class="end-slot">
+			<ion-button [disabled]="!selectedImage.fullPath" (click)="useImage()">Select</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<ng-container *ngIf="images.length">
+		<ion-card *ngFor="let image of images; let i = index" (click)="selectImage(image, i)" [ngClass]="{'img-selected': image === selectedImage.fullPath}">
+			<ion-img [src]="image"></ion-img>
+		</ion-card>
+	</ng-container>
+</ion-content>
