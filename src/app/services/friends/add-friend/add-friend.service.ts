@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {AngularFirestore} from '@angular/fire/firestore';
+import {AngularFirestore, DocumentReference} from '@angular/fire/firestore';
 import {AuthService} from '../../auth/auth.service';
 import {Observable} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
@@ -12,9 +12,9 @@ export class AddFriendService {
 
     constructor(private afs: AngularFirestore, private authService: AuthService) { }
 
-    addFriend(id: string): Observable<any> {
+    addFriend(userRef: DocumentReference): Observable<any> {
         const data = {
-            id,
+            user: userRef,
             isPending: true,
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()

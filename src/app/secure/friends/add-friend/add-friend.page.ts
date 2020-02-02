@@ -11,6 +11,7 @@ import {FriendsService} from '../../../services/friends/friends.service';
     styleUrls: ['./add-friend.page.sass'],
 })
 export class AddFriendPage implements OnInit {
+    private masterUsersList = [];
     username: FormControl;
     users = [];
     friends$ = this.friendsService.getFriends().pipe(
@@ -30,7 +31,9 @@ export class AddFriendPage implements OnInit {
             switchMap(search => this.addFriendService.searchUsers(search, `${search}\uf8ff`, 'username', 10)),
             withLatestFrom(this.friends$)
         ).subscribe(res => {
-            this.users = res[0].docs.map(doc => {
+            console.log(res);
+            this.masterUsersList = res[0].docs;
+            this.users = this.masterUsersList.map(doc => {
                 const user = doc.data();
                 user.id = doc.id;
                 user.isLoading = false;
@@ -42,9 +45,16 @@ export class AddFriendPage implements OnInit {
 
     add(user) {
         user.isLoading = true;
-        this.addFriendService.addFriend(user.id).pipe(first()).subscribe(res => {
+        const userRef = this.findFriendInMasterList(user.id);
+        this.addFriendService.addFriend(userRef).pipe(first()).subscribe(res => {
             user.isFriend = true;
             user.isLoading = false;
         });
+    }
+
+    private findFriendInMasterList(id) {
+        return this.masterUsersList.find(user => {
+            return user.id === id;
+        }).ref;
     }
 }

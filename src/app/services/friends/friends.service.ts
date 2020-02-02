@@ -33,6 +33,7 @@ export class FriendsService {
                         of([]),
                         from(res.docs).pipe(
                             flatMap(friend => {
+                                console.log(friend);
                                 return this.getFriendData(friend.data().id).pipe(
                                     map(friendData => {
                                         return {...friendData.data(), ...friend.data()};
